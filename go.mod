@@ -1,8 +1,8 @@
-module github.com/osrg/hookfs
+module github.com/gdsoumya/hookfs
 
-go 1.12
+go 1.13
 
 require (
-	github.com/hanwen/go-fuse v1.0.0
-	github.com/sirupsen/logrus v1.4.1
+	github.com/hanwen/go-fuse/v2 v2.0.3 // indirect
+	github.com/sirupsen/logrus v1.8.1 // indirect
 )

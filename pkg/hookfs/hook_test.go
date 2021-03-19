@@ -2,8 +2,8 @@ package hookfs
 
 import (
 	"fmt"
-	"github.com/hanwen/go-fuse/fuse"
-	"github.com/osrg/hookfs/pkg/utils"
+	"github.com/gdsoumya/hookfs/pkg/utils"
+	"github.com/hanwen/go-fuse/v2/fuse"
 	"log"
 	"os"
 	"path/filepath"
@@ -25,7 +25,7 @@ func TestRenameHook_RenameHookRenameTest(t *testing.T) {
 	_, err := os.Create(filepath.Join(mountpoint, "tsdb.txt"))
 
 	if err != nil {
-		log.Printf("%v",err)
+		log.Printf("%v", err)
 	}
 
 	//rename should be failed
@@ -34,10 +34,10 @@ func TestRenameHook_RenameHookRenameTest(t *testing.T) {
 	fmt.Println(err)
 }
 
-func newFuseServer(t *testing.T, original,mountpoint string)(*fuse.Server){
+func newFuseServer(t *testing.T, original, mountpoint string) *fuse.Server {
 	createDirIfAbsent(original)
 	createDirIfAbsent(mountpoint)
-	fs, err :=  NewHookFs(original, mountpoint, &TestRenameHook{})
+	fs, err := NewHookFs(original, mountpoint, &TestRenameHook{})
 	utils.Ok(t, err)
 	server, err := fs.ServeAsync()
 	if err != nil {
@@ -67,7 +67,7 @@ type TestRenameHook struct{}
 
 func (h *TestRenameHook) PreRename(oldPatgh string, newPath string) (hooked bool, ctx HookContext, err error) {
 	fmt.Printf("Pre renamed file from %s to %s \n", oldPatgh, newPath)
-	return true, nil,  syscall.EIO
+	return true, nil, syscall.EIO
 }
 
 func (h *TestRenameHook) PostRename(oldPatgh string, newPath string) (hooked bool, ctx HookContext, err error) {

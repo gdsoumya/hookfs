@@ -5,9 +5,9 @@ import (
 	"time"
 
 	// log "github.com/sirupsen/logrus"
-	"github.com/hanwen/go-fuse/fuse"
-	"github.com/hanwen/go-fuse/fuse/nodefs"
-	"github.com/hanwen/go-fuse/fuse/pathfs"
+	"github.com/hanwen/go-fuse/v2/fuse"
+	"github.com/hanwen/go-fuse/v2/fuse/nodefs"
+	"github.com/hanwen/go-fuse/v2/fuse/pathfs"
 )
 
 func newHookServer(hookfs *HookFs) (*fuse.Server, error) {
@@ -21,9 +21,10 @@ func newHookServer(hookfs *HookFs) (*fuse.Server, error) {
 	conn := nodefs.NewFileSystemConnector(pathFs.Root(), opts)
 	originalAbs, _ := filepath.Abs(hookfs.Original)
 	mOpts := &fuse.MountOptions{
-		AllowOther: true,
-		Name:       hookfs.FsName,
-		FsName:     originalAbs,
+		AllowOther:  true,
+		Name:        hookfs.FsName,
+		FsName:      originalAbs,
+		DirectMount: true,
 	}
 	server, err := fuse.NewServer(conn.RawFS(), hookfs.Mountpoint, mOpts)
 	if err != nil {
