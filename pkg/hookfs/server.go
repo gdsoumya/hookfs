@@ -10,7 +10,7 @@ import (
 	"github.com/hanwen/go-fuse/v2/fuse/pathfs"
 )
 
-func newHookServer(hookfs *HookFs) (*fuse.Server, error) {
+func newHookServer(hookfs *HookFs, directMount, debug bool) (*fuse.Server, error) {
 	opts := &nodefs.Options{
 		NegativeTimeout: time.Second,
 		AttrTimeout:     time.Second,
@@ -24,7 +24,8 @@ func newHookServer(hookfs *HookFs) (*fuse.Server, error) {
 		AllowOther:  true,
 		Name:        hookfs.FsName,
 		FsName:      originalAbs,
-		DirectMount: true,
+		DirectMount: directMount,
+		Debug:       debug,
 	}
 	server, err := fuse.NewServer(conn.RawFS(), hookfs.Mountpoint, mOpts)
 	if err != nil {

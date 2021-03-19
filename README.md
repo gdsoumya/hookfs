@@ -40,7 +40,7 @@ Then, regist your hook implementation to the HookFS server.
 ```go
 fs, err := NewHookFs("/original", "/mnt/hookfs", &YourHook{})
 if err != nil { .. }
-err = fs.Serve()
+err = fs.Serve(directMount, debug)
 ```
 
 See [`hook.go`](hookfs/hook.go) for further information. [GoDoc](https://godoc.org/github.com/osrg/hookfs) is also your friend.

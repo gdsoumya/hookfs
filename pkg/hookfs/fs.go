@@ -2,6 +2,7 @@ package hookfs
 
 import (
 	"fmt"
+	fuse2 "github.com/hanwen/go-fuse/fuse"
 	"time"
 
 	"github.com/hanwen/go-fuse/v2/fuse"
@@ -9,6 +10,10 @@ import (
 	"github.com/hanwen/go-fuse/v2/fuse/pathfs"
 	log "github.com/sirupsen/logrus"
 )
+
+type MountOptions struct {
+	fuse2.MountOptions
+}
 
 // HookFs is the object hooking the fs.
 type HookFs struct {
@@ -365,8 +370,8 @@ func (h *HookFs) StatFs(name string) *fuse.StatfsOut {
 }
 
 // Serve starts the server (blocking).
-func (h *HookFs) Serve() error {
-	server, err := newHookServer(h)
+func (h *HookFs) Serve(directMount, debug bool) error {
+	server, err := newHookServer(h, directMount, debug)
 	if err != nil {
 		return err
 	}
@@ -377,8 +382,8 @@ func (h *HookFs) Serve() error {
 // Serve initiates the FUSE loop. Normally, callers should run Serve()
 // and wait for it to exit, but tests will want to run this in a
 // goroutine.
-func (h *HookFs) ServeAsync() (*fuse.Server, error) {
-	server, err := newHookServer(h)
+func (h *HookFs) ServeAsync(directMount, debug bool) (*fuse.Server, error) {
+	server, err := newHookServer(h, directMount, debug)
 	if err != nil {
 		return nil, err
 	}

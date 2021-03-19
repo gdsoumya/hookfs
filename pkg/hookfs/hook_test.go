@@ -39,7 +39,7 @@ func newFuseServer(t *testing.T, original, mountpoint string) *fuse.Server {
 	createDirIfAbsent(mountpoint)
 	fs, err := NewHookFs(original, mountpoint, &TestRenameHook{})
 	utils.Ok(t, err)
-	server, err := fs.ServeAsync()
+	server, err := fs.ServeAsync(false, false)
 	if err != nil {
 		log.Fatalf("start server failed, %v", err)
 	}

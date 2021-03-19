@@ -47,7 +47,7 @@ func serve(original string, mountpoint string) {
 	}
 	log.Infof("Serving %s", fs)
 	log.Infof("Please run `fusermount -u %s` after using this, manually", mountpoint)
-	if err = fs.Serve(); err != nil {
+	if err = fs.Serve(false, false); err != nil {
 		log.Fatal(err)
 	}
 }
